@@ -24,32 +24,38 @@
     var CONFIG = {"hostname":"rafa.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
   </script>
 
-  <meta name="description" content="我的博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Rafa">
-<meta property="og:url" content="http://rafa.github.io/index.html">
+  <meta name="description" content="首先由一个典型场景引出WebSocket的需求场景，进而阐述WebSocket协议本身。包括其定义，特点以及握手过程报文的解读。最后，再次从协议维度和实现长连接的方法两个方面，对比了HTTP与WebSocket的异同，让读者对WebSocket有更深的认识和理解。 由一个场景说起小明购买了一张机票，在出发前的几个小时，他希望通过航班动态查询软件，实时的了解航班动态，如是否有延误，取消等信息。 那么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="什么是WebSocket以及它的用途">
+<meta property="og:url" content="http://rafa.github.io/2020/11/16/websocket/index.html">
 <meta property="og:site_name" content="Rafa">
-<meta property="og:description" content="我的博客">
+<meta property="og:description" content="首先由一个典型场景引出WebSocket的需求场景，进而阐述WebSocket协议本身。包括其定义，特点以及握手过程报文的解读。最后，再次从协议维度和实现长连接的方法两个方面，对比了HTTP与WebSocket的异同，让读者对WebSocket有更深的认识和理解。 由一个场景说起小明购买了一张机票，在出发前的几个小时，他希望通过航班动态查询软件，实时的了解航班动态，如是否有延误，取消等信息。 那么">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/8/11/1652968f281dc0f6?imageslim">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/8/11/165297933e4426ae?imageslim">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/8/11/165297b353710252?imageslim">
+<meta property="article:published_time" content="2020-11-16T06:55:57.617Z">
+<meta property="article:modified_time" content="2020-11-16T08:01:26.609Z">
 <meta property="article:author" content="Rafa">
 <meta property="article:tag" content="个人博客，技术博客，git，github，hexo，静态">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/8/11/1652968f281dc0f6?imageslim">
 
 
-<link rel="canonical" href="http://rafa.github.io/">
+<link rel="canonical" href="http://rafa.github.io/2020/11/16/websocket/">
 
 
 <script class="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'en'
   };
 </script>
 
-  <title>Rafa</title>
+  <title>什么是WebSocket以及它的用途 | Rafa</title>
   
 
 
@@ -138,7 +144,7 @@
 
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           Table of Contents
@@ -151,6 +157,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <section class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B1%E4%B8%80%E4%B8%AA%E5%9C%BA%E6%99%AF%E8%AF%B4%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">由一个场景说起</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket%E7%9A%84%E7%9C%9F%E8%BA%AB"><span class="nav-number">2.</span> <span class="nav-text">WebSocket的真身</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket%E7%9A%84%E5%87%BA%E7%94%9F"><span class="nav-number">3.</span> <span class="nav-text">WebSocket的出生</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#WebSocket%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%89%B9%E7%82%B9"><span class="nav-number">3.1.</span> <span class="nav-text">WebSocket协议的特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebSocket%E7%9A%84%E9%80%9A%E4%BF%A1%E5%BB%BA%E7%AB%8B%E2%80%94%E2%80%94%E6%8F%A1%E6%89%8B%E8%BF%87%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">WebSocket的通信建立——握手过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP1-1%E4%B8%8EWebSocket%E7%9A%84%E5%BC%82%E5%90%8C"><span class="nav-number">4.</span> <span class="nav-text">HTTP1.1与WebSocket的异同</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E5%B1%82%E9%9D%A2%E7%9A%84%E5%BC%82%E5%90%8C"><span class="nav-number"></span> <span class="nav-text">协议层面的异同</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%90%8C%E7%82%B9"><span class="nav-number">0.1.</span> <span class="nav-text">相同点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%90%8C%E7%82%B9"><span class="nav-number">0.2.</span> <span class="nav-text">不同点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#HTTP%E7%9A%84%E9%95%BF%E8%BF%9E%E6%8E%A5%E4%B8%8EWebSocket%E7%9A%84%E6%8C%81%E4%B9%85%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BC%82%E5%90%8C"><span class="nav-number"></span> <span class="nav-text">HTTP的长连接与WebSocket的持久连接的异同</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP%E7%9A%84%E4%B8%A4%E7%A7%8D%E9%95%BF%E8%BF%9E%E6%8E%A5"><span class="nav-number">0.1.</span> <span class="nav-text">HTTP的两种长连接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E3%80%81HTTP1-1%E7%9A%84%E8%BF%9E%E6%8E%A5%E9%BB%98%E8%AE%A4%E4%BD%BF%E7%94%A8%E9%95%BF%E8%BF%9E%E6%8E%A5%EF%BC%88Persistent-connection%EF%BC%89"><span class="nav-number">0.1.1.</span> <span class="nav-text">一、HTTP1.1的连接默认使用长连接（Persistent connection）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E2%80%9C%E9%95%BF%E8%BD%AE%E8%AF%A2%E2%80%9D"><span class="nav-number">0.1.2.</span> <span class="nav-text">二、“长轮询”</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WebSocket%E7%9A%84%E6%8C%81%E4%B9%85%E8%BF%9E%E6%8E%A5"><span class="nav-number">0.2.</span> <span class="nav-text">WebSocket的持久连接</span></a></li></ol></li></ol></div>
         </section>
         <!--/noindex-->
 
@@ -192,11 +199,12 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
       
 
       
-    
+
+  
 
 
 <div class="post-block">
@@ -216,9 +224,9 @@
       <meta itemprop="name" content="Rafa">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/11/16/websocket/" class="post-title-link" itemprop="url">什么是WebSocket以及它的用途</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          什么是WebSocket以及它的用途
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -242,7 +250,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>首先由一个典型场景引出WebSocket的需求场景，进而阐述WebSocket协议本身。包括其定义，特点以及握手过程报文的解读。最后，再次从协议维度和实现长连接的方法两个方面，对比了HTTP与WebSocket的异同，让读者对WebSocket有更深的认识和理解。</p>
+        <p>首先由一个典型场景引出WebSocket的需求场景，进而阐述WebSocket协议本身。包括其定义，特点以及握手过程报文的解读。最后，再次从协议维度和实现长连接的方法两个方面，对比了HTTP与WebSocket的异同，让读者对WebSocket有更深的认识和理解。</p>
 <h2 id="由一个场景说起"><a href="#由一个场景说起" class="headerlink" title="由一个场景说起"></a>由一个场景说起</h2><p>小明购买了一张机票，在出发前的几个小时，他希望通过航班动态查询软件，实时的了解航班动态，如是否有延误，取消等信息。</p>
 <p>那么这时查询软件与服务器交互如下图：</p>
 <p><img src="https://user-gold-cdn.xitu.io/2018/8/11/1652968f281dc0f6?imageslim" alt="Image text"></p>
@@ -393,7 +401,6 @@
 <h4 id="二、“长轮询”"><a href="#二、“长轮询”" class="headerlink" title="二、“长轮询”"></a>二、“长轮询”</h4><p>即客户端发送一个超时时间很长的Request，服务器保持住这个连接，在有新数据到达时返回Response</p>
 <h3 id="WebSocket的持久连接"><a href="#WebSocket的持久连接" class="headerlink" title="WebSocket的持久连接"></a>WebSocket的持久连接</h3><p>只需建立一次Request/Response消息对，之后都是TCP连接，避免了需要多次建立Request/Response消息对而产生的冗余头部信息。节省了大量流量和服务器资源。因此被广泛应用于线上WEB游戏和线上聊天室的开发。</p>
 
-      
     </div>
 
     
@@ -401,93 +408,24 @@
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/14/hello-world/" rel="prev" title="Hello World">
+                  <i class="fa fa-chevron-left"></i> Hello World
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
 
 
 
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://rafa.github.io/2020/11/14/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Rafa">
-      <meta itemprop="description" content="我的博客">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rafa">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2020/11/14/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2020-11-14 17:05:39" itemprop="dateCreated datePublished" datetime="2020-11-14T17:05:39+08:00">2020-11-14</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-
-  
 
 
 
