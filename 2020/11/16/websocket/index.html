@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -7,10 +7,10 @@
 <meta name="generator" content="Hexo 5.2.0">
 
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/img/16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/16x16.png">
+  <link rel="mask-icon" href="/img/logo.png" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -21,21 +21,21 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"rafa.github.io","root":"/","images":"/images","scheme":"Muse","version":"8.0.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}};
+    var CONFIG = {"hostname":"rafa.github.io","root":"/","images":"/images","scheme":"Mist","version":"8.0.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 
   <meta name="description" content="首先由一个典型场景引出WebSocket的需求场景，进而阐述WebSocket协议本身。包括其定义，特点以及握手过程报文的解读。最后，再次从协议维度和实现长连接的方法两个方面，对比了HTTP与WebSocket的异同，让读者对WebSocket有更深的认识和理解。 由一个场景说起小明购买了一张机票，在出发前的几个小时，他希望通过航班动态查询软件，实时的了解航班动态，如是否有延误，取消等信息。 那么">
 <meta property="og:type" content="article">
 <meta property="og:title" content="什么是WebSocket以及它的用途">
 <meta property="og:url" content="http://rafa.github.io/2020/11/16/websocket/index.html">
-<meta property="og:site_name" content="Rafa">
+<meta property="og:site_name" content="Rafa&#39;s Blog">
 <meta property="og:description" content="首先由一个典型场景引出WebSocket的需求场景，进而阐述WebSocket协议本身。包括其定义，特点以及握手过程报文的解读。最后，再次从协议维度和实现长连接的方法两个方面，对比了HTTP与WebSocket的异同，让读者对WebSocket有更深的认识和理解。 由一个场景说起小明购买了一张机票，在出发前的几个小时，他希望通过航班动态查询软件，实时的了解航班动态，如是否有延误，取消等信息。 那么">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/8/11/1652968f281dc0f6?imageslim">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/8/11/165297933e4426ae?imageslim">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/8/11/165297b353710252?imageslim">
 <meta property="article:published_time" content="2020-11-16T06:55:57.617Z">
-<meta property="article:modified_time" content="2020-11-16T08:01:26.609Z">
+<meta property="article:modified_time" content="2020-11-17T07:03:02.473Z">
 <meta property="article:author" content="Rafa">
 <meta property="article:tag" content="个人博客，技术博客，git，github，hexo，静态">
 <meta name="twitter:card" content="summary">
@@ -51,11 +51,11 @@
     sidebar: "",
     isHome : false,
     isPost : true,
-    lang   : 'en'
+    lang   : 'zh-CN'
   };
 </script>
 
-  <title>什么是WebSocket以及它的用途 | Rafa</title>
+  <title>什么是WebSocket以及它的用途 | Rafa's Blog</title>
   
 
 
@@ -107,7 +107,10 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="切换导航栏">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
@@ -115,10 +118,9 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">Rafa</h1>
+      <h1 class="site-title">Rafa's Blog</h1>
       <i class="logo-line"></i>
     </a>
-      <p class="site-subtitle" itemprop="description">Rafa's blog</p>
   </div>
 
   <div class="site-nav-right">
@@ -129,6 +131,40 @@
 
 
 
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-guestbook">
+
+    <a href="/guestbook/" rel="section"><i class="fa fa-book fa-fw"></i>留言板</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+  </ul>
+</nav>
 
 
 
@@ -147,10 +183,10 @@
     <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -164,14 +200,15 @@
         <section class="site-overview-wrap sidebar-panel">
           <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
   <p class="site-author-name" itemprop="name">Rafa</p>
-  <div class="site-description" itemprop="description">我的博客</div>
+  <div class="site-description" itemprop="description">角落</div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
-          <a href="/archives">
+          <a href="/archives/">
+        
           <span class="site-state-item-count">2</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
   </nav>
@@ -193,6 +230,7 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -211,17 +249,17 @@
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://rafa.github.io/2020/11/16/websocket/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Rafa">
-      <meta itemprop="description" content="我的博客">
+      <meta itemprop="description" content="角落">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rafa">
+      <meta itemprop="name" content="Rafa's Blog">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -234,12 +272,39 @@
       <span class="post-meta-item-icon">
         <i class="far fa-calendar"></i>
       </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
+      <span class="post-meta-item-text">发表于</span>
 
-      <time title="Created: 2020-11-16 14:55:57 / Modified: 16:01:26" itemprop="dateCreated datePublished" datetime="2020-11-16T14:55:57+08:00">2020-11-16</time>
+      <time title="创建时间：2020-11-16 14:55:57" itemprop="dateCreated datePublished" datetime="2020-11-16T14:55:57+08:00">2020-11-16</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2020-11-17 15:03:02" itemprop="dateModified" datetime="2020-11-17T15:03:02+08:00">2020-11-17</time>
+      </span>
 
+  
+    <span id="/2020/11/16/websocket/" class="post-meta-item leancloud_visitors" data-flag-title="什么是WebSocket以及它的用途" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/11/16/websocket/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/11/16/websocket/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
   
 </div>
 
@@ -430,6 +495,7 @@
 
 
       
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -471,8 +537,6 @@
   </span>
   <span class="author" itemprop="copyrightHolder">Rafa</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
 
     </div>
   </footer>
@@ -512,6 +576,18 @@
   
 
   
+
+<script>
+NexT.utils.loadComments('#valine-comments', () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js', () => {
+    new Valine(Object.assign({"enable":true,"appId":"CK7xE9lScrPXgwCaUTRiyNBO-gzGzoHsz","appKey":"4Qaw5Pxyy82pXmo1E7RdiI6e","serverURLs":null,"placeholder":"输入你的评论\n昵称为必填项目，输入QQ号可以直接获取用户名和头像，并且省去了填写邮箱的麻烦！\n虽然email不是必选，但是填写了email可以收到推送通知哦！","avatar":"mm","meta":["nick","mail","link"],"pageSize":10,"lang":"zh-CN","visitor":true,"comment_count":true,"recordIP":false,"enableQQ":true,"requiredFields":["nick"]}, {
+      el: '#valine-comments',
+      path: "/2020/11/16/websocket/",
+      serverURLs: "https://ck7xe9ls.api.lncldglobal.com"
+    }));
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
