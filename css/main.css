@@ -1833,6 +1833,7 @@ pre code {
   color: #ff0000;
   display: inline-block;
   margin: 0 5px;
+  animation: icon-animate 1.33s ease-in-out infinite;
 }
 @-moz-keyframes icon-animate {
   0%, 100% {
@@ -2248,6 +2249,23 @@ pre code {
   font-weight: normal;
   margin: initial;
   overflow-wrap: break-word;
+}
+.posts-expand .post-title .post-edit-link {
+  border-bottom: none;
+  color: #bbb;
+  display: inline-block;
+  float: right;
+  font-size: 1.25em;
+  margin-left: -1.2em;
+  transition: color 0.2s ease-in;
+}
+@media (max-width: 567px) {
+  .posts-expand .post-title .post-edit-link {
+    margin-left: initial;
+  }
+}
+.posts-expand .post-title .post-edit-link:hover {
+  color: #87daff;
 }
 .posts-expand .post-title-link {
   border-bottom: none;
@@ -2987,7 +3005,7 @@ hr {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #c2ffbf;
+  background: #f2d9ff;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
