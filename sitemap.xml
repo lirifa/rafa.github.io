@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://lirifa.github.io/baidu_verify_code-ghsIT3UsXz.html</loc>
+    
+    <lastmod>2020-11-30</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://lirifa.github.io/DOM%E4%BA%8B%E4%BB%B6%E6%B5%81.html</loc>
     
     <lastmod>2020-11-30</lastmod>
@@ -60,36 +67,36 @@
 
   <url>
     <loc>https://lirifa.github.io/</loc>
-    <lastmod>2020-11-30</lastmod>
+    <lastmod>2020-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>https://lirifa.github.io/tags/hexo/</loc>
-    <lastmod>2020-11-30</lastmod>
+    <loc>https://lirifa.github.io/tags/%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2020-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://lirifa.github.io/tags/%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2020-11-30</lastmod>
+    <loc>https://lirifa.github.io/tags/hexo/</loc>
+    <lastmod>2020-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://lirifa.github.io/tags/%E5%89%8D%E7%AB%AF/</loc>
-    <lastmod>2020-11-30</lastmod>
+    <lastmod>2020-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://lirifa.github.io/tags/websocket/</loc>
-    <lastmod>2020-11-30</lastmod>
+    <lastmod>2020-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -98,14 +105,14 @@
   
   <url>
     <loc>https://lirifa.github.io/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2020-11-30</lastmod>
+    <lastmod>2020-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://lirifa.github.io/categories/hello-world/</loc>
-    <lastmod>2020-11-30</lastmod>
+    <lastmod>2020-12-01</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
