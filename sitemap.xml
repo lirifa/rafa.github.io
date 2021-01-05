@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://lirifa.gitee.io/H5-video%E5%BC%80%E5%8F%91%E9%97%AE%E9%A2%98%E5%8F%8A%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E7%82%B9.html</loc>
+    
+    <lastmod>2021-01-05</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://lirifa.gitee.io/about/index.html</loc>
     
     <lastmod>2020-12-01</lastmod>
@@ -60,7 +67,7 @@
 
   <url>
     <loc>https://lirifa.gitee.io/</loc>
-    <lastmod>2020-12-12</lastmod>
+    <lastmod>2021-01-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -68,28 +75,28 @@
   
   <url>
     <loc>https://lirifa.gitee.io/tags/%E7%BD%91%E7%BB%9C/</loc>
-    <lastmod>2020-12-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://lirifa.gitee.io/tags/hexo/</loc>
-    <lastmod>2020-12-12</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://lirifa.gitee.io/tags/websocket/</loc>
-    <lastmod>2020-12-12</lastmod>
+    <lastmod>2021-01-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://lirifa.gitee.io/tags/%E5%89%8D%E7%AB%AF/</loc>
-    <lastmod>2020-12-12</lastmod>
+    <lastmod>2021-01-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://lirifa.gitee.io/tags/hexo/</loc>
+    <lastmod>2021-01-05</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://lirifa.gitee.io/tags/websocket/</loc>
+    <lastmod>2021-01-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -98,14 +105,14 @@
   
   <url>
     <loc>https://lirifa.gitee.io/categories/%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2020-12-12</lastmod>
+    <lastmod>2021-01-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://lirifa.gitee.io/categories/hello-world/</loc>
-    <lastmod>2020-12-12</lastmod>
+    <lastmod>2021-01-05</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
